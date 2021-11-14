@@ -10,7 +10,7 @@ namespace HospBack.DB
         public string UserId { get; set; }
         public string RoleId { get; set; }
 
-        public virtual AspNetRole1 Role { get; set; }
+        public virtual AspNetRole Role { get; set; }
         public virtual AspNetUser User { get; set; }
     }
 }

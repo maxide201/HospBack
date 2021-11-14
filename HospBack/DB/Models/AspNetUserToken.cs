@@ -12,6 +12,6 @@ namespace HospBack.DB
         public string Name { get; set; }
         public string Value { get; set; }
 
-        public virtual AspNetUser1 User { get; set; }
+        public virtual AspNetUser User { get; set; }
     }
 }

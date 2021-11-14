@@ -20,7 +20,7 @@ namespace HospBack.DB
 
         public virtual DoctorType DoctorTypeNavigation { get; set; }
         public virtual Hospital Hospital { get; set; }
-        public virtual AspNetUser1 User { get; set; }
+        public virtual AspNetUser User { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
         public virtual ICollection<Visit> Visits { get; set; }
     }

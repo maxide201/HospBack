@@ -12,7 +12,11 @@ namespace HospBack.DB
             AspNetUserClaims = new HashSet<AspNetUserClaim>();
             AspNetUserLogins = new HashSet<AspNetUserLogin>();
             AspNetUserRoles = new HashSet<AspNetUserRole>();
-            AspNetUserToken1s = new HashSet<AspNetUserToken1>();
+            AspNetUserTokens = new HashSet<AspNetUserToken>();
+
+            Doctors = new HashSet<Doctor>();
+            Analyses = new HashSet<Analysis>();
+            Visits = new HashSet<Visit>();
         }
 
         public string Id { get; set; }
@@ -37,6 +41,10 @@ namespace HospBack.DB
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
-        public virtual ICollection<AspNetUserToken1> AspNetUserToken1s { get; set; }
+        public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
+
+        public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<Analysis> Analyses { get; set; }
+        public virtual ICollection<Visit> Visits { get; set; }
     }
 }
