@@ -13,6 +13,6 @@ namespace HospBack.DB
         public string ResultDescription { get; set; }
         public string AnalyseType { get; set; }
 
-        public virtual AspNetUser User { get; set; }
+        public virtual Patient Patient { get; set; }
     }
 }

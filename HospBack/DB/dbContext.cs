@@ -33,6 +33,7 @@ namespace HospBack.DB
         public virtual DbSet<DoctorType> DoctorTypes { get; set; }
         public virtual DbSet<Hospital> Hospitals { get; set; }
         public virtual DbSet<HospitalDoctorType> HospitalDoctorTypes { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Referral> Referrals { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Visit> Visits { get; set; }
@@ -71,7 +72,7 @@ namespace HospBack.DB
                     .IsRequired()
                     .HasColumnName("user_id");
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Patient)
                     .WithMany(p => p.Analyses)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -272,6 +273,30 @@ namespace HospBack.DB
                     .HasConstraintName("doctor_hospital_id");
             });
 
+            modelBuilder.Entity<Patient>(entity =>
+            {
+                entity.ToTable("patients");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .UseIdentityAlwaysColumn();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Surname)
+                    .IsRequired()
+                    .HasColumnName("surname");
+
+                entity.Property(e => e.PhoneNumber)
+                    .IsRequired()
+                    .HasColumnName("phone_number");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("doctor_surname");
+            });
+
             modelBuilder.Entity<Referral>(entity =>
             {
                 entity.ToTable("referrals");
@@ -360,7 +385,7 @@ namespace HospBack.DB
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("visit_doctor_id");
 
-                entity.HasOne(d => d.User)
+                entity.HasOne(d => d.Patient)
                     .WithMany(p => p.Visits)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)

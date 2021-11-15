@@ -15,8 +15,6 @@ namespace HospBack.DB
             AspNetUserTokens = new HashSet<AspNetUserToken>();
 
             Doctors = new HashSet<Doctor>();
-            Analyses = new HashSet<Analysis>();
-            Visits = new HashSet<Visit>();
         }
 
         public string Id { get; set; }
@@ -44,7 +42,5 @@ namespace HospBack.DB
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
 
         public virtual ICollection<Doctor> Doctors { get; set; }
-        public virtual ICollection<Analysis> Analyses { get; set; }
-        public virtual ICollection<Visit> Visits { get; set; }
     }
 }

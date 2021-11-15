@@ -19,7 +19,7 @@ namespace HospBack.DB
         public string Status { get; set; }
 
         public virtual Doctor Doctor { get; set; }
-        public virtual AspNetUser User { get; set; }
+        public virtual Patient Patient { get; set; }
         public virtual ICollection<Certificate> Certificates { get; set; }
     }
 }
