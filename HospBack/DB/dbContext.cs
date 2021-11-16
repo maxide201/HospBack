@@ -30,6 +30,7 @@ namespace HospBack.DB
         public virtual DbSet<HospitalDoctorType> HospitalDoctorTypes { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
         public virtual DbSet<Referral> Referrals { get; set; }
+        public virtual DbSet<Registrar> Registrars { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Visit> Visits { get; set; }
 
