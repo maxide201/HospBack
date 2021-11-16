@@ -196,6 +196,14 @@ namespace HospBack.DB
                     .IsRequired()
                     .HasColumnName("user_id");
 
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Surname)
+                    .IsRequired()
+                    .HasColumnName("surname");
+
                 entity.HasOne(d => d.DoctorTypeNavigation)
                     .WithMany(p => p.Doctors)
                     .HasForeignKey(d => d.DoctorType)
@@ -331,6 +339,33 @@ namespace HospBack.DB
                     .HasForeignKey(d => d.CertificateId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("referral_certificate_id");
+            });
+
+            modelBuilder.Entity<Registrar>(entity =>
+            {
+                entity.ToTable("registrars");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .UseIdentityAlwaysColumn();
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Surname)
+                    .IsRequired()
+                    .HasColumnName("surname");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Registrars)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("registrar_user_id");
             });
 
             modelBuilder.Entity<Schedule>(entity =>

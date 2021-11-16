@@ -15,6 +15,7 @@ namespace HospBack.DB
             AspNetUserTokens = new HashSet<AspNetUserToken>();
 
             Doctors = new HashSet<Doctor>();
+            Registrars = new HashSet<Registrar>();
         }
 
         public string Id { get; set; }
@@ -42,5 +43,6 @@ namespace HospBack.DB
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
 
         public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<Registrar> Registrars { get; set; }
     }
 }

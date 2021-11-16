@@ -17,6 +17,8 @@ namespace HospBack.DB
         public string UserId { get; set; }
         public int HospitalId { get; set; }
         public int DoctorType { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
 
         public virtual DoctorType DoctorTypeNavigation { get; set; }
         public virtual Hospital Hospital { get; set; }
