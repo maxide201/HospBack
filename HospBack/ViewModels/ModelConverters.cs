@@ -25,5 +25,19 @@ namespace HospBack.ViewModels
 		}
 
 		#endregion
+
+		public static Registrar ToDataModel(this RegistrarViewModel registrar)
+		{
+			if (registrar == null)
+				return null;
+
+			var model = new Registrar();
+			model.Name = registrar.Name;
+			model.Surname = registrar.Surname;
+
+			return model;
+		}
+
+		
 	}
 }

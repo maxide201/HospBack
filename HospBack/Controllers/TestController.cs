@@ -38,6 +38,19 @@ namespace HospBack.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public async Task<JsonResult> Role()
+        {
+            using(var ctx = CreateDataContext())
+			{
+                var user = _userManager.Users.Where(x => x.Id == AuthorizedUserId).FirstOrDefault();
+                var a = await _userManager.GetRolesAsync(user);
+                return new JsonResult(a);
+            }
+            
+        }
+
+        [HttpGet]
         public async Task<JsonResult> DbConnection()
         {
             try
@@ -58,13 +71,12 @@ namespace HospBack.Controllers
         [HttpGet]
         public async Task<JsonResult> Init()
 		{
+
             string[] roles = new string[] { "admin", "doctor", "registrar" };
 
             foreach (string role in roles)
             {
                 var isExist = await _roleManager.RoleExistsAsync(role);
-                var roleModel = new Role();
-                roleModel.Name = role;
                 if (!isExist)
                     await _roleManager.CreateAsync(new IdentityRole(role));
             }
@@ -81,7 +93,7 @@ namespace HospBack.Controllers
                 user.PasswordHash = hashed;
 
                 await _userManager.CreateAsync(user);
-                await _userManager.AddToRoleAsync(user, "admin");
+                var result = await _userManager.AddToRoleAsync(user, "admin");
 
             }
 

@@ -1,0 +1,18 @@
+﻿@model IEnumerable<HospBack.DB.Registrar>
+
+<h2>Регистратура</h2>
+<h3>Работники</h3>
+
+<form method="post" action="registry/create">
+    <input name="Name" placeholder="Имя" />
+    <input name="Surname" placeholder="Фамилия" />
+    <input name="Email" placeholder="E-mail" />
+    <button type="submit">Создать</button>
+</form>
+
+@foreach (var registrar in Model)
+{
+    <hr />
+    @registrar.Name @registrar.Surname;
+}
+

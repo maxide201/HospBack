@@ -37,11 +37,11 @@ namespace HospBack
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 7;
+                //options.Password.RequireDigit = true;
+                //options.Password.RequireLowercase = true;
+                //options.Password.RequireUppercase = false;
+                //options.Password.RequireNonAlphanumeric = false;
+                //options.Password.RequiredLength = 7;
             })
                 .AddEntityFrameworkStores<dbContext>();
         }
