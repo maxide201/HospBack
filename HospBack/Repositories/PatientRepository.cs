@@ -14,7 +14,7 @@ namespace HospBack.Repositories
 		void CreatePatient(dbContext ctx, Patient patient);
 		void UpdatePatient(dbContext ctx, Patient patient);
 		Patient GetPatientById(dbContext ctx, int id);
-		Patient GetPatientByPhoneNumber(dbContext ctx, int id);
+		Patient GetPatientByPhoneNumber(dbContext ctx, string phoneNumber);
 	}
 	public class PatientRepository : IPatientRepository
 	{
@@ -30,8 +30,8 @@ namespace HospBack.Repositories
 		public Patient GetPatientById(dbContext ctx, int id) =>
 			ctx.Patients.Where(x => x.Id == id).FirstOrDefault();
 
-		public Patient GetPatientByPhoneNumber(dbContext ctx, int id) =>
-			ctx.Patients.Where(x => x.Id == id).FirstOrDefault();
+		public Patient GetPatientByPhoneNumber(dbContext ctx, string phoneNumber) =>
+			ctx.Patients.Where(x => x.PhoneNumber == phoneNumber).FirstOrDefault();
 
 	}
 }
