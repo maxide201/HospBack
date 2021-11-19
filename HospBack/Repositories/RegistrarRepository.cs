@@ -1,4 +1,5 @@
 ﻿using HospBack.DB;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,7 +29,9 @@ namespace HospBack.Repositories
 			ctx.Registrars.Update(registrar);
 
 		public Registrar GetRegistrarById(dbContext ctx, int id) =>
-			ctx.Registrars.Where(x => x.Id == id).FirstOrDefault();
+			ctx.Registrars.Include(x => x.User)
+			.Where(x => x.Id == id)
+			.FirstOrDefault();
 
 		public Registrar GetRegistrarByUserId(dbContext ctx, string userId) =>
 			ctx.Registrars.Where(x => x.UserId == userId).FirstOrDefault();

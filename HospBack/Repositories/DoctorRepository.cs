@@ -1,4 +1,5 @@
 ﻿using HospBack.DB;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -28,7 +29,9 @@ namespace HospBack.Repositories
 			ctx.Doctors.Update(doctor);
 
 		public Doctor GetDoctorById(dbContext ctx, int id) =>
-			ctx.Doctors.Where(x => x.Id == id).FirstOrDefault();
+			ctx.Doctors.Include(x => x.User)
+					   .Where(x => x.Id == id)
+					   .FirstOrDefault();
 
 		public Doctor GetDoctorByUserId(dbContext ctx, string userId) =>
 			ctx.Doctors.Where(x => x.UserId == userId).FirstOrDefault();
