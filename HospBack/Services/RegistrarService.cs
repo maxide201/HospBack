@@ -12,58 +12,58 @@ namespace HospBack.Services
 	public interface IRegistrarService
 	{
 		List<Registrar> GetAllRegistrars(dbContext ctx);
+		Registrar GetRegistrar(dbContext ctx, int id);
 		void CreateRegistrar(dbContext ctx, Registrar registrar);
 		void EditRegistrar(dbContext ctx, Registrar registrar);
 		void DeleteRegistrar(dbContext ctx, int id);
 	}
 	public class RegistrarService : IRegistrarService
 	{
-		IRegistrarRepository _registrarRepository;
-		public RegistrarService(IRegistrarRepository registrarRepository)
-		{
-			_registrarRepository = registrarRepository;
-		}
-
 		public void CreateRegistrar(dbContext ctx, Registrar registrar)
 		{
 			isDataCorrect(registrar);
 
-			var model = _registrarRepository.GetRegistrarByUserId(ctx, registrar.UserId);
+			var model = ctx.Registrars.Where(x => x.UserId == registrar.UserId).FirstOrDefault();
 			if (model != null)
 				throw new ModelAlreadyExistException();
 
-			_registrarRepository.CreateRegistrar(ctx, registrar);
+			ctx.Registrars.Add(registrar);
 		}
 
 		public void DeleteRegistrar(dbContext ctx, int id)
 		{
-			var model = _registrarRepository.GetRegistrarById(ctx, id);
+			var model = ctx.Registrars.Find(id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			//_registrarRepository.Delete(ctx, id);
+			ctx.Registrars.Remove(model);
 		}
 
 		public void EditRegistrar(dbContext ctx, Registrar registrar)
 		{
 			isDataCorrect(registrar);
 
-			var model = _registrarRepository.GetRegistrarById(ctx, registrar.Id);
+			var model = ctx.Registrars.Find(registrar.Id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			_registrarRepository.UpdateRegistrar(ctx, registrar);
+			model.Name = registrar.Name;
+			model.Surname = registrar.Surname;
 		}
 
 		public List<Registrar> GetAllRegistrars(dbContext ctx)
 		{
-			return _registrarRepository.GetRegistrars(ctx);
+			return ctx.Registrars.ToList();
 		}
 
+		public Registrar GetRegistrar(dbContext ctx, int id)
+		{
+			return ctx.Registrars.Find(id);
+		}
 
 		public bool isDataCorrect(Registrar registrar)
 		{
-			if (registrar?.Name != null && registrar?.Surname != null && registrar?.UserId != null)
+			if (registrar?.Name != null && registrar?.Surname != null)
 				return true;
 			throw new IncorrectDataException();
 		}

@@ -1,18 +1,38 @@
 ﻿@model IEnumerable<HospBack.DB.Registrar>
 
 <h2>Регистратура</h2>
-<h3>Работники</h3>
 
+<h3>Создание работника регистратуры</h3>
 <form method="post" action="registry/create">
     <input name="Name" placeholder="Имя" />
     <input name="Surname" placeholder="Фамилия" />
     <input name="Email" placeholder="E-mail" />
     <button type="submit">Создать</button>
 </form>
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Работник создан</p>
+        break;
+    case "exist":
+        <p style="color:darkred">Работник с таким email уже существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
 
+<h3>Работники</h3>
 @foreach (var registrar in Model)
 {
     <hr />
-    @registrar.Name @registrar.Surname;
+    <a href="/admin/registry/registrar?id=@registrar.Id">
+        <div>
+            @registrar.Name &nbsp @registrar.Surname
+        </div>
+    </a>
 }
 

@@ -1,0 +1,30 @@
+﻿@model HospBack.ViewModels.RegistrarViewModel
+
+<h2>Работник регистратуры</h2>
+
+<form method="post" action="../registry/update">
+    <input type="hidden" name="Id" value=@Model.Id />
+    Имя: <input name="Name" value=@Model.Name />
+    Фамилия: <input name="Surname" value=@Model.Surname />
+    Почта: <input name="Email" value=@Model.Email />
+    <button type="submit">Обновить данные</button>
+</form>
+<form method="post" action="../registry/delete">
+    <input type="hidden" name="Id" value=@Model.Id />
+    <button type="submit">Удалить работника</button>
+</form>
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Работник обновлен</p>
+        break;
+    case "notexist":
+        <p style="color:darkred">Не существует такого работника</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
