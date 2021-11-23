@@ -93,8 +93,6 @@ namespace HospBack.Controllers
                 user.PasswordHash = hashed;
 
                 await _userManager.CreateAsync(user);
-                var result = await _userManager.AddToRoleAsync(user, "admin");
-
             }
 
             return new JsonResult("success!");

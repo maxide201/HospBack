@@ -29,7 +29,7 @@ namespace HospBack.Repositories
 			ctx.Registrars.Update(registrar);
 
 		public Registrar GetRegistrarById(dbContext ctx, int id) =>
-			ctx.Registrars.Include(x => x.User)
+			ctx.Registrars
 			.Where(x => x.Id == id)
 			.FirstOrDefault();
 

@@ -1,0 +1,8 @@
+﻿@model IEnumerable<HospBack.DB.Hospital>
+
+<h2>Список больниц:</h2>
+@foreach(var hospital in Model)
+{
+    <hr/>
+    @hospital.Name;
+}

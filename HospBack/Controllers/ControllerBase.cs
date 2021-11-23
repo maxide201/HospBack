@@ -21,7 +21,7 @@ namespace HospBack.Controllers
 
         protected dbContext CreateDataContext()
         {
-            return ContextFactory.Get(Configuration.GetConnectionString("Database"));
+            return new dbContext(Configuration.GetConnectionString("Database"));
         }
 
         protected JsonResult CreateEntityResult(int serverId)

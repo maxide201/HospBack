@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace HospBack.ViewModels
 {
-	public class RegistrarViewModel
+	public class DoctorViewModel
 	{
-		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string Email { get; set; }
+		public int DoctorType { get; set; }
+		public int HospitalId { get; set; }
 	}
 }
