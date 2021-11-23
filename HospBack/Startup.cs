@@ -61,19 +61,19 @@ namespace HospBack
 
         public void AddModelServices(IServiceCollection services )
 		{
-            services.AddSingleton<IHospitalService, HospitalService>();
-            services.AddSingleton<IDoctorService, DoctorService>();
-            services.AddSingleton<IDoctorTypeService, DoctorTypeService>();
-            services.AddSingleton<IPatientService, PatientService>();
-            services.AddSingleton<IRegistrarService, RegistrarService>();
+            services.AddScoped<IHospitalService, HospitalService>();
+            services.AddScoped<IDoctorService, DoctorService>();
+            services.AddScoped<IDoctorTypeService, DoctorTypeService>();
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IRegistrarService, RegistrarService>();
         }
         public void AddModelRepositories(IServiceCollection services)
         {
-            services.AddSingleton<IHospitalRepository, HospitalRepository>();
-            services.AddSingleton<IDoctorRepository, DoctorRepository>();
-            services.AddSingleton<IDoctorTypeRepository, DoctorTypeRepository>();
-            services.AddSingleton<IPatientRepository, PatientRepository>();
-            services.AddSingleton<IRegistrarRepository, RegistrarRepository>();
+            services.AddScoped<IHospitalRepository, HospitalRepository>();
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IDoctorTypeRepository, DoctorTypeRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IRegistrarRepository, RegistrarRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

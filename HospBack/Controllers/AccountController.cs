@@ -39,10 +39,10 @@ namespace HospBack.Controllers
                 return View("");
 
             if (User.IsInRole("registrar"))
-                return View("registry");
+                return Redirect("/registry");
 
             if (User.IsInRole("admin"))
-                return View("admin");
+                return Redirect("/admin");
 
             return View(); //error
         }
