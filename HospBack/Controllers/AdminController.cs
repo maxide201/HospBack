@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using HospBack.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HospBack.Controllers
 {
@@ -386,5 +387,153 @@ namespace HospBack.Controllers
         }
         #endregion
 
+        #region Doctor
+        [HttpGet]
+        [Route("doctors")]
+        public IActionResult Doctors()
+        {
+            using (var ctx = CreateDataContext())
+            {
+                var doctors = _doctorService.GetAllDoctors(ctx);
+                var types = _doctorTypeService.GetAllDoctorTypes(ctx);
+                var hospitals = _hospitalService.GetAllHospitals(ctx);
+
+                var doctorTypes = new List<SelectListItem>();
+                foreach (var type in types)
+                    doctorTypes.Add(new SelectListItem(type.Type, type.Id.ToString()));
+
+                var hopitalIds = new List<SelectListItem>();
+                foreach (var hospital in hospitals)
+                    hopitalIds.Add(new SelectListItem(hospital.Name, hospital.Id.ToString()));
+
+                ViewBag.DoctorTypes = doctorTypes;
+                ViewBag.Hospitals = hopitalIds;
+                return View(doctors);
+            }
+        }
+
+        [HttpGet]
+        [Route("doctors/doctor")]
+        public IActionResult Doctor(int id)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                var doctor = _doctorService.GetDoctor(ctx, id);
+                if (doctor == null)
+                    return NotFound();
+
+                var user = ctx.Users.Where(x => x.Id == doctor.UserId).FirstOrDefault();
+                var viewModel = doctor.ToViewModel(user.Email);
+
+                var types = _doctorTypeService.GetAllDoctorTypes(ctx);
+                var hospitals = _hospitalService.GetAllHospitals(ctx);
+
+                var doctorTypes = new List<SelectListItem>();
+                foreach (var type in types)
+                    doctorTypes.Add(new SelectListItem(type.Type, type.Id.ToString()));
+
+                var hopitalIds = new List<SelectListItem>();
+                foreach (var hospital in hospitals)
+                    hopitalIds.Add(new SelectListItem(hospital.Name, hospital.Id.ToString()));
+
+                ViewBag.DoctorTypes = doctorTypes;
+                ViewBag.Hospitals = hopitalIds;
+
+                return View(viewModel);
+            }
+        }
+
+        [HttpPost]
+        [Route("doctors/create")]
+        public IActionResult CreateDoctor([FromForm] DoctorViewModel doctor)
+        {
+
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    var isExist = ctx.Users.Any(x => x.Email == doctor.Email);
+                    if (isExist)
+                        throw new ModelAlreadyExistException();
+
+                    var user = new User();
+                    user.Email = doctor.Email;
+                    var password = new PasswordHasher<User>();
+                    user.PasswordHash = password.HashPassword(user, "12345");
+                    ctx.Users.Add(user);
+                    _userManager.AddToRoleAsync(user, "doctor");
+
+                    var model = doctor.ToDataModel();
+                    model.UserId = user.Id;
+                    _doctorService.CreateDoctor(ctx, model);
+                    TempData["status"] = "ok";
+                }
+                catch (IncorrectDataException)
+                {
+                    TempData["status"] = "incorrect";
+                }
+                catch (ModelAlreadyExistException)
+                {
+                    TempData["status"] = "exist";
+                }
+                catch (Exception)
+                {
+                    TempData["status"] = "unknow";
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctors");
+            }
+        }
+
+        [HttpPost]
+        [Route("doctors/update")]
+        public IActionResult UpdateDoctor([FromForm] DoctorViewModel doctor)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    var model = doctor.ToDataModel();
+                    _doctorService.EditDoctor(ctx, model);
+                    TempData["status"] = "ok";
+                }
+                catch (IncorrectDataException)
+                {
+                    TempData["status"] = "incorrect";
+                }
+                catch (ModelNotExistException)
+                {
+                    TempData["status"] = "notexist";
+                }
+                catch (Exception)
+                {
+                    TempData["status"] = "unknow";
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctors/doctor?id=" + doctor.Id);
+            }
+        }
+
+        [HttpPost]
+        [Route("doctors/delete")]
+        public IActionResult DeleteDoctor(int id)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    _doctorService.DeleteDoctor(ctx, id);
+                }
+                catch (Exception)
+                {
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctors");
+            }
+        }
+        #endregion
     }
 }

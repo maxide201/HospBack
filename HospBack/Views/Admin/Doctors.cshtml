@@ -2,16 +2,51 @@
 
 <h2>Врачи</h2>
 
-<form method="post" action="doctor/create">
+<h3>Создание врача</h3>
+<form method="post" action="doctors/create">
     <input name="Name" placeholder="Имя" />
     <input name="Surname" placeholder="Фамилия" />
     <input name="Email" placeholder="E-mail" />
+    <select name="DoctorType">
+        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.DoctorTypes)
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    </select>
+    <select name="HospitalId">
+        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Hospitals)
+        {
+            <option value="@item.Value">@item.Text</option>
+        }
+    </select>
     <button type="submit">Создать</button>
 </form>
 
-@foreach (var registrar in Model)
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Врач создан</p>
+        break;
+    case "exist":
+        <p style="color:darkred">Врач с таким email уже существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
+
+<h3>Врачи</h3>
+@foreach (var doctor in Model)
 {
     <hr />
-    @registrar.Name @registrar.Surname;
+    <a href="/admin/doctors/doctor?id=@doctor.Id">
+        <div>
+            @doctor.Name &nbsp @doctor.Surname
+        </div>
+    </a>
 }
 

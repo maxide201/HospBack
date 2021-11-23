@@ -26,6 +26,7 @@ namespace HospBack.ViewModels
 
 		#endregion
 
+		#region Registrar
 		public static Registrar ToDataModel(this RegistrarViewModel registrar)
 		{
 			if (registrar == null)
@@ -52,7 +53,9 @@ namespace HospBack.ViewModels
 
 			return model;
 		}
+		#endregion
 
+		#region Hospital
 		public static Hospital ToDataModel(this HospitalViewModel hospital)
 		{
 			if (hospital == null)
@@ -80,7 +83,9 @@ namespace HospBack.ViewModels
 
 			return model;
 		}
+		#endregion
 
+		#region DoctorType
 		public static DoctorType ToDataModel(this DoctorTypeViewModel doctorType)
 		{
 			if (doctorType == null)
@@ -104,6 +109,39 @@ namespace HospBack.ViewModels
 
 			return model;
 		}
+		#endregion
 
+		#region Doctor
+		public static Doctor ToDataModel(this DoctorViewModel doctor)
+		{
+			if (doctor == null)
+				return null;
+
+			var model = new Doctor();
+			model.Id = doctor.Id;
+			model.Name = doctor.Name;
+			model.Surname = doctor.Surname;
+			model.DoctorType = Int32.Parse(doctor.DoctorType);
+			model.HospitalId = Int32.Parse(doctor.HospitalId);
+
+			return model;
+		}
+
+		public static DoctorViewModel ToViewModel(this Doctor doctor, string email)
+		{
+			if (doctor == null)
+				return null;
+
+			var model = new DoctorViewModel();
+			model.Id = doctor.Id;
+			model.Email = email;
+			model.Name = doctor.Name;
+			model.Surname = doctor.Surname;
+			model.DoctorType = doctor.DoctorType.ToString();
+			model.HospitalId = doctor.HospitalId.ToString();
+
+			return model;
+		}
+		#endregion
 	}
 }

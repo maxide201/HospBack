@@ -12,58 +12,57 @@ namespace HospBack.Services
 	public interface IDoctorService
 	{
 		List<Doctor> GetAllDoctors(dbContext ctx);
+		Doctor GetDoctor(dbContext ctx, int id);
 		void CreateDoctor(dbContext ctx, Doctor doctor);
 		void EditDoctor(dbContext ctx, Doctor doctor);
 		void DeleteDoctor(dbContext ctx, int id);
 	}
 	public class DoctorService : IDoctorService
 	{
-		IDoctorRepository _doctorRepository;
-		public DoctorService(IDoctorRepository doctorRepository)
-		{
-			_doctorRepository = doctorRepository;
-		}
-
 		public void CreateDoctor(dbContext ctx, Doctor doctor)
 		{
 			isDataCorrect(doctor);
 
-			var model = _doctorRepository.GetDoctorByUserId(ctx, doctor.UserId);
-			if (model != null)
-				throw new ModelAlreadyExistException();
-
-			_doctorRepository.CreateDoctor(ctx, doctor);
+			ctx.Doctors.Add(doctor);
 		}
 
 		public void DeleteDoctor(dbContext ctx, int id)
 		{
-			var model = _doctorRepository.GetDoctorById(ctx, id);
+			var model = ctx.Doctors.Find(id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			//_doctorRepository.Delete(ctx, id);
+			ctx.Doctors.Remove(model);
 		}
 
 		public void EditDoctor(dbContext ctx, Doctor doctor)
 		{
 			isDataCorrect(doctor);
 
-			var model = _doctorRepository.GetDoctorById(ctx, doctor.Id);
+			var model = ctx.Doctors.Find(doctor.Id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			_doctorRepository.UpdateDoctor(ctx, doctor);
+			model.Name = doctor.Name;
+			model.Surname = doctor.Surname;
+			model.HospitalId = doctor.HospitalId;
+			model.DoctorType = doctor.DoctorType;
+			
 		}
 
 		public List<Doctor> GetAllDoctors(dbContext ctx)
 		{
-			return _doctorRepository.GetDoctors(ctx);
+			return ctx.Doctors.ToList();
 		}
 
+		public Doctor GetDoctor(dbContext ctx, int id)
+		{
+			return ctx.Doctors.Find(id);
+		}
 
 		public bool isDataCorrect(Doctor doctor)
 		{
-			if (doctor?.Name != null && doctor?.Surname != null && doctor?.UserId != null && doctor?.HospitalId != null)
+			if (doctor?.Name != null && doctor?.Surname != null && doctor?.HospitalId != null)
 				return true;
 			throw new IncorrectDataException();
 		}

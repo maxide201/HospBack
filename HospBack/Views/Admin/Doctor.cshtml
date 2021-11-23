@@ -1,0 +1,42 @@
+﻿@model HospBack.ViewModels.DoctorViewModel
+
+<h2>Работник регистратуры</h2>
+
+<form method="post" action="../doctors/update">
+    <input type="hidden" name="Id" value=@Model.Id />
+    Имя: <input name="Name" value=@Model.Name />
+    Фамилия: <input name="Surname" value=@Model.Surname />
+    Почта: <input name="Email" value=@Model.Email />
+    <select name="DoctorType" >
+        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.DoctorTypes)
+        {
+            <option value="@item.Value" selected=@Model.DoctorType.Equals(item.Value)>@item.Text</option>
+        }
+    </select>
+    <select name="HospitalId">
+        @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Hospitals)
+        {
+            <option value="@item.Value" selected=@Model.HospitalId.Equals(item.Value)>@item.Text</option>
+        }
+    </select>
+    <button type="submit">Обновить данные</button>
+</form>
+<form method="post" action="../doctors/delete">
+    <input type="hidden" name="Id" value=@Model.Id />
+    <button type="submit">Удалить врача</button>
+</form>
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Врач обновлен</p>
+        break;
+    case "notexist":
+        <p style="color:darkred">Не существует такого врача</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}

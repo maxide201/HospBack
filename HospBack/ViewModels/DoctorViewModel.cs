@@ -7,10 +7,11 @@ namespace HospBack.ViewModels
 {
 	public class DoctorViewModel
 	{
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Surname { get; set; }
 		public string Email { get; set; }
-		public int DoctorType { get; set; }
-		public int HospitalId { get; set; }
+		public string DoctorType { get; set; }
+		public string HospitalId { get; set; }
 	}
 }
