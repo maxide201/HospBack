@@ -276,9 +276,115 @@ namespace HospBack.Controllers
                 return Redirect("/admin/hospitals");
             }
         }
-		#endregion
+        #endregion
 
+        #region DoctorType
+        [HttpGet]
+        [Route("doctorTypes")]
+        public IActionResult DoctorTypes()
+        {
+            using (var ctx = CreateDataContext())
+            {
+                var doctorTypes = ctx.DoctorTypes.ToList();
+                return View(doctorTypes);
+            }
+        }
 
-       
+        [HttpGet]
+        [Route("doctorTypes/doctorType")]
+        public IActionResult DoctorType(int id)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                var doctorType = _doctorTypeService.GetDoctorType(ctx, id);
+                if (doctorType == null)
+                    return NotFound();
+
+                var viewModel = doctorType.ToViewModel();
+                return View(viewModel);
+            }
+        }
+
+        [HttpPost]
+        [Route("doctorTypes/create")]
+        public IActionResult CreateDoctorType([FromForm] DoctorTypeViewModel doctorType)
+        {
+
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    var model = doctorType.ToDataModel();
+                    _doctorTypeService.CreateDoctorType(ctx, model);
+                    TempData["status"] = "ok";
+                }
+                catch (IncorrectDataException)
+                {
+                    TempData["status"] = "incorrect";
+                }
+                catch (ModelAlreadyExistException)
+                {
+                    TempData["status"] = "exist";
+                }
+                catch (Exception)
+                {
+                    TempData["status"] = "unknow";
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctorTypes");
+            }
+        }
+
+        [HttpPost]
+        [Route("doctorTypes/update")]
+        public IActionResult UpdateDoctorType([FromForm] DoctorTypeViewModel doctorType)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    var model = doctorType.ToDataModel();
+                    _doctorTypeService.EditDoctorType(ctx, model);
+                    TempData["status"] = "ok";
+                }
+                catch (IncorrectDataException)
+                {
+                    TempData["status"] = "incorrect";
+                }
+                catch (ModelNotExistException)
+                {
+                    TempData["status"] = "notexist";
+                }
+                catch (Exception)
+                {
+                    TempData["status"] = "unknow";
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctorTypes/doctorType?id=" + doctorType.Id);
+            }
+        }
+
+        [HttpPost]
+        [Route("doctorTypes/delete")]
+        public IActionResult DeleteDoctorType(int id)
+        {
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    _doctorTypeService.DeleteDoctorType(ctx, id);
+                }
+                catch (Exception)
+                {
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/admin/doctorTypes");
+            }
+        }
+        #endregion
+
     }
 }

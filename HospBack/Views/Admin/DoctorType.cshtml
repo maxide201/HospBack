@@ -1,0 +1,28 @@
+﻿@model HospBack.ViewModels.DoctorTypeViewModel
+
+<h2>Специалньости</h2>
+
+<form method="post" action="../doctortypes/update">
+    <input type="hidden" name="Id" value=@Model.Id />
+    Название: <input name="Type" value=@Model.Type />
+    <button type="submit">Обновить данные</button>
+</form>
+<form method="post" action="../doctortypes/delete">
+    <input type="hidden" name="Id" value=@Model.Id />
+    <button type="submit">Удалить специальность</button>
+</form>
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Спцеиальность обновлена</p>
+        break;
+    case "notexist":
+        <p style="color:darkred">Не существует такой специальности</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}

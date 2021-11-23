@@ -12,52 +12,52 @@ namespace HospBack.Services
 	public interface IDoctorTypeService
 	{
 		List<DoctorType> GetAllDoctorTypes(dbContext ctx);
+		DoctorType GetDoctorType(dbContext ctx, int id);
 		void CreateDoctorType(dbContext ctx, DoctorType doctorType);
 		void EditDoctorType(dbContext ctx, DoctorType doctorType);
 		void DeleteDoctorType(dbContext ctx, int id);
 	}
 	public class DoctorTypeService : IDoctorTypeService
 	{
-		IDoctorTypeRepository _doctorTypeRepository;
-		public DoctorTypeService(IDoctorTypeRepository doctorTypeRepository)
-		{
-			_doctorTypeRepository = doctorTypeRepository;
-		}
-
 		public void CreateDoctorType(dbContext ctx, DoctorType doctorType)
 		{
 			isDataCorrect(doctorType);
 
-			var model = _doctorTypeRepository.GetDoctorTypeByType(ctx, doctorType.Type);
+			var model = ctx.DoctorTypes.Where(x => x.Type == doctorType.Type).FirstOrDefault();
 			if (model != null)
 				throw new ModelAlreadyExistException();
 
-			_doctorTypeRepository.CreateDoctorType(ctx, doctorType);
+			ctx.DoctorTypes.Add(doctorType);
 		}
 
 		public void DeleteDoctorType(dbContext ctx, int id)
 		{
-			var model = _doctorTypeRepository.GetDoctorTypeById(ctx, id);
+			var model = ctx.DoctorTypes.Find(id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			//_doctorTypeRepository.Delete(ctx, id);
+			ctx.DoctorTypes.Remove(model);
 		}
 
 		public void EditDoctorType(dbContext ctx, DoctorType doctorType)
 		{
 			isDataCorrect(doctorType);
 
-			var model = _doctorTypeRepository.GetDoctorTypeById(ctx, doctorType.Id);
+			var model = ctx.DoctorTypes.Find(doctorType.Id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			_doctorTypeRepository.UpdateDoctorType(ctx, doctorType);
+			model.Type = doctorType.Type;
 		}
 
 		public List<DoctorType> GetAllDoctorTypes(dbContext ctx)
 		{
-			return _doctorTypeRepository.GetDoctorTypes(ctx);
+			return ctx.DoctorTypes.ToList();
+		}
+
+		public DoctorType GetDoctorType(dbContext ctx, int id)
+		{
+			return ctx.DoctorTypes.Find(id);
 		}
 
 

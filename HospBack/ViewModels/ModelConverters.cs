@@ -81,5 +81,29 @@ namespace HospBack.ViewModels
 			return model;
 		}
 
+		public static DoctorType ToDataModel(this DoctorTypeViewModel doctorType)
+		{
+			if (doctorType == null)
+				return null;
+
+			var model = new DoctorType();
+			model.Id = doctorType.Id;
+			model.Type = doctorType.Type;
+
+			return model;
+		}
+
+		public static DoctorTypeViewModel ToViewModel(this DoctorType doctorType)
+		{
+			if (doctorType == null)
+				return null;
+
+			var model = new DoctorTypeViewModel();
+			model.Id = doctorType.Id;
+			model.Type = doctorType.Type;
+
+			return model;
+		}
+
 	}
 }
