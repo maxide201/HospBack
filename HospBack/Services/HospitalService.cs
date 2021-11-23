@@ -12,52 +12,54 @@ namespace HospBack.Services
 	public interface IHospitalService
 	{
 		List<Hospital> GetAllHospitals(dbContext ctx);
+		Hospital GetHospital(dbContext ctx, int id);
 		void CreateHospital(dbContext ctx, Hospital hospital);
 		void EditHospital(dbContext ctx, Hospital hospital);
 		void DeleteHospital(dbContext ctx, int id);
 	}
 	public class HospitalService : IHospitalService
 	{
-		IHospitalRepository _hospitalRepository;
-		public HospitalService(IHospitalRepository hospitalRepository)
-		{
-			_hospitalRepository = hospitalRepository;
-		}
-
 		public void CreateHospital(dbContext ctx, Hospital hospital)
 		{
 			isDataCorrect(hospital);
 
-			var model = _hospitalRepository.GetHospitalByName(ctx, hospital.Name);
+			var model = ctx.Hospitals.Where(x => x.Name == hospital.Name).FirstOrDefault();
 			if (model != null)
 				throw new ModelAlreadyExistException();
 
-			_hospitalRepository.CreateHospital(ctx, hospital);
+			ctx.Hospitals.Add(hospital);
 		}
 
 		public void DeleteHospital(dbContext ctx, int id)
 		{
-			var model = _hospitalRepository.GetHospitalById(ctx, id);
+			var model = ctx.Hospitals.Find(id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			//_hospitalRepository.Delete(ctx, id);
+			ctx.Hospitals.Remove(model);
 		}
 
 		public void EditHospital(dbContext ctx, Hospital hospital)
 		{
 			isDataCorrect(hospital);
 
-			var model = _hospitalRepository.GetHospitalById(ctx, hospital.Id);
+			var model = ctx.Hospitals.Find(hospital.Id);
 			if (model == null)
 				throw new ModelNotExistException();
 
-			_hospitalRepository.UpdateHospital(ctx, hospital);
+			model.Address = hospital.Address;
+			model.Name = hospital.Name;
+			model.PhoneNumber = hospital.PhoneNumber;
 		}
 
 		public List<Hospital> GetAllHospitals(dbContext ctx)
 		{
-			return _hospitalRepository.GetHospitals(ctx);
+			return ctx.Hospitals.ToList();
+		}
+
+		public Hospital GetHospital(dbContext ctx, int id)
+		{
+			return ctx.Hospitals.Find(id);
 		}
 
 
