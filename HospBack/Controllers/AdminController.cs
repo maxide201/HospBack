@@ -184,40 +184,30 @@ namespace HospBack.Controllers
         {
             using (var ctx = CreateDataContext())
             {
-                var registrar = _registrarService.GetRegistrar(ctx, id);
-                if (registrar == null)
+                var hospital = _hospitalService.GetHospital(ctx, id);
+                if (hospital == null)
                     return NotFound();
 
-                var user = ctx.Users.Where(x => x.Id == registrar.UserId).FirstOrDefault();
-                var viewModel = registrar.ToViewModel(user.Email);
-
+                var viewModel = hospital.ToViewModel();
                 return View(viewModel);
             }
         }
 
         [HttpPost]
         [Route("hospitals/create")]
-        public IActionResult CreateHospital([FromForm] RegistrarViewModel registrar)
+        public IActionResult CreateHospital([FromForm] HospitalViewModel hospital)
         {
 
             using (var ctx = CreateDataContext())
             {
                 try
                 {
-                    var isExist = ctx.Users.Any(x => x.Email == registrar.Email);
+                    var isExist = ctx.Hospitals.Any(x => x.Name == hospital.Name);
                     if (isExist)
                         throw new ModelAlreadyExistException();
 
-                    var user = new User();
-                    user.Email = registrar.Email;
-                    var password = new PasswordHasher<User>();
-                    user.PasswordHash = password.HashPassword(user, "12345");
-                    ctx.Users.Add(user);
-                    _userManager.AddToRoleAsync(user, "registrar");
-
-                    var model = registrar.ToDataModel();
-                    model.UserId = user.Id;
-                    _registrarService.CreateRegistrar(ctx, model);
+                    var model = hospital.ToDataModel();
+                    _hospitalService.CreateHospital(ctx, model);
                     TempData["status"] = "ok";
                 }
                 catch (IncorrectDataException)
@@ -234,20 +224,20 @@ namespace HospBack.Controllers
                 }
                 ctx.SaveChanges();
 
-                return Redirect("/admin/registry");
+                return Redirect("/admin/hospitals");
             }
         }
 
         [HttpPost]
         [Route("hospitals/update")]
-        public IActionResult UpdateHospital([FromForm] RegistrarViewModel registrar)
+        public IActionResult UpdateHospital([FromForm] HospitalViewModel hospital)
         {
             using (var ctx = CreateDataContext())
             {
                 try
                 {
-                    var model = registrar.ToDataModel();
-                    _registrarService.EditRegistrar(ctx, model);
+                    var model = hospital.ToDataModel();
+                    _hospitalService.EditHospital(ctx, model);
                     TempData["status"] = "ok";
                 }
                 catch (IncorrectDataException)
@@ -264,7 +254,7 @@ namespace HospBack.Controllers
                 }
                 ctx.SaveChanges();
 
-                return Redirect("/admin/registry/registrar?id=" + registrar.Id);
+                return Redirect("/admin/hospitals/hospital?id=" + hospital.Id);
             }
         }
 
@@ -276,39 +266,19 @@ namespace HospBack.Controllers
             {
                 try
                 {
-                    _registrarService.DeleteRegistrar(ctx, id);
+                    _hospitalService.DeleteHospital(ctx, id);
                 }
                 catch (Exception)
                 {
                 }
                 ctx.SaveChanges();
 
-                return Redirect("/admin/registry");
+                return Redirect("/admin/hospitals");
             }
         }
 		#endregion
 
 
-		[HttpPost]
-        [Route("hospitals/create")]
-        public IActionResult CreateHospital([FromForm] HospitalViewModel hospital)
-        {
-            //if (!isDataCorrect(hospiatl))
-                //return Redirect("/");
-
-            using (var ctx = CreateDataContext())
-            {
-                var isExist = ctx.Users.Any(x => x.Email == hospital.Name);
-                if (isExist)
-                    return Redirect("/admin/hospitals");
-
-                var model = hospital.ToDataModel();
-                ctx.Hospitals.Add(model);
-                ctx.SaveChanges();
-
-                return Redirect("../");
-            }
-        }
        
     }
 }

@@ -32,12 +32,54 @@ namespace HospBack.ViewModels
 				return null;
 
 			var model = new Registrar();
+			model.Id = registrar.Id;
 			model.Name = registrar.Name;
 			model.Surname = registrar.Surname;
 
 			return model;
 		}
 
-		
+		public static RegistrarViewModel ToViewModel(this Registrar registrar, string email)
+		{
+			if (registrar == null)
+				return null;
+
+			var model = new RegistrarViewModel();
+			model.Id = registrar.Id;
+			model.Name = registrar.Name;
+			model.Surname = registrar.Surname;
+			model.Email = email;
+
+			return model;
+		}
+
+		public static Hospital ToDataModel(this HospitalViewModel hospital)
+		{
+			if (hospital == null)
+				return null;
+
+			var model = new Hospital();
+			model.Id = hospital.Id;
+			model.Name = hospital.Name;
+			model.PhoneNumber = hospital.PhoneNumber;
+			model.Address = hospital.Address;
+
+			return model;
+		}
+
+		public static HospitalViewModel ToViewModel(this Hospital hospital)
+		{
+			if (hospital == null)
+				return null;
+
+			var model = new HospitalViewModel();
+			model.Id = hospital.Id;
+			model.Name = hospital.Name;
+			model.PhoneNumber = hospital.PhoneNumber;
+			model.Address = hospital.Address;
+
+			return model;
+		}
+
 	}
 }

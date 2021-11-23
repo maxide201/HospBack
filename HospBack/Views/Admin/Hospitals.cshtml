@@ -1,0 +1,36 @@
+﻿@model IEnumerable<HospBack.DB.Hospital>
+
+<h2>Больницы</h2>
+
+<form method="post" action="hospitals/create">
+    <input name="Name" placeholder="Название" required />
+    <input name="Address" placeholder="Адресс" required />
+    <input name="PhoneNumber" placeholder="Номер телефона" required />
+    <button type="submit">Создать</button>
+</form>
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Больница создана</p>
+        break;
+    case "exist":
+        <p style="color:darkred">Больница с таким названием уже существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
+
+@foreach (var hospital in Model)
+{
+    <hr />
+    <a href="/admin/hospitals/hospital?id=@hospital.Id">
+        <div>
+            @hospital.Name &nbsp @hospital.Address
+        </div>
+    </a>
+}

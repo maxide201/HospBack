@@ -1,0 +1,30 @@
+﻿@model HospBack.ViewModels.HospitalViewModel
+
+<h2>Больница</h2>
+
+<form method="post" action="../hospitals/update">
+    <input type="hidden" name="Id" value=@Model.Id />
+    Название: <input name="Name" value=@Model.Name />
+    Адрес: <input name="Address" value=@Model.Address />
+    Номер телефона: <input name="PhoneNumber" value=@Model.PhoneNumber />
+    <button type="submit">Обновить данные</button>
+</form>
+<form method="post" action="../hospitals/delete">
+    <input type="hidden" name="Id" value=@Model.Id />
+    <button type="submit">Удалить больницу</button>
+</form>
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Больница обновлена</p>
+        break;
+    case "notexist":
+        <p style="color:darkred">Не существует такой больницы</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
