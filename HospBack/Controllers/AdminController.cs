@@ -76,24 +76,22 @@ namespace HospBack.Controllers
 
         [HttpPost]
         [Route("registry/create")]
-        public IActionResult CreateRegsitrar([FromForm] RegistrarViewModel registrar)
+        public async Task <IActionResult> CreateRegsitrar([FromForm] RegistrarViewModel registrar)
         {
-
             using (var ctx = CreateDataContext())
             {
+                var user = new User();
                 try
                 {
                     var isExist = ctx.Users.Any(x => x.Email == registrar.Email);
                     if (isExist)
                         throw new ModelAlreadyExistException();
 
-                    var user = new User();
-                    user.Email = registrar.Email;
+                    user.Email = user.UserName = registrar.Email;
                     var password = new PasswordHasher<User>();
-                    user.PasswordHash = password.HashPassword(user, "12345");
+                    user.PasswordHash = password.HashPassword(user, "secret");
                     ctx.Users.Add(user);
-                    _userManager.AddToRoleAsync(user, "registrar");
-
+                   
                     var model = registrar.ToDataModel();
                     model.UserId = user.Id;
                     _registrarService.CreateRegistrar(ctx, model);
@@ -112,7 +110,8 @@ namespace HospBack.Controllers
                     TempData["status"] = "unknow";
                 }
                 ctx.SaveChanges();
-
+                if (user != null)
+                    await _userManager.AddToRoleAsync(user, "registrar");
                 return Redirect("/admin/registry");
             }
         }
@@ -445,23 +444,22 @@ namespace HospBack.Controllers
 
         [HttpPost]
         [Route("doctors/create")]
-        public IActionResult CreateDoctor([FromForm] DoctorViewModel doctor)
+        public async Task<IActionResult> CreateDoctor([FromForm] DoctorViewModel doctor)
         {
 
             using (var ctx = CreateDataContext())
             {
+                var user = new User();
                 try
                 {
                     var isExist = ctx.Users.Any(x => x.Email == doctor.Email);
                     if (isExist)
                         throw new ModelAlreadyExistException();
 
-                    var user = new User();
-                    user.Email = doctor.Email;
+                    user.Email = user.UserName = doctor.Email;
                     var password = new PasswordHasher<User>();
-                    user.PasswordHash = password.HashPassword(user, "12345");
+                    user.PasswordHash = password.HashPassword(user, "secret");
                     ctx.Users.Add(user);
-                    _userManager.AddToRoleAsync(user, "doctor");
 
                     var model = doctor.ToDataModel();
                     model.UserId = user.Id;
@@ -481,6 +479,8 @@ namespace HospBack.Controllers
                     TempData["status"] = "unknow";
                 }
                 ctx.SaveChanges();
+                if(user != null)
+                    await _userManager.AddToRoleAsync(user, "doctor");
 
                 return Redirect("/admin/doctors");
             }
