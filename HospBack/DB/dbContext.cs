@@ -377,7 +377,7 @@ namespace HospBack.DB
                     .HasColumnName("id")
                     .UseIdentityAlwaysColumn();
 
-                entity.Property(e => e.DayOfWeek).HasColumnName("day_of_week");
+                entity.Property(e => e.Day).HasColumnName("day");
 
                 entity.Property(e => e.DoctorId).HasColumnName("doctor_id");
 

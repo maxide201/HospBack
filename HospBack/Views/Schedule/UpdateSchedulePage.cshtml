@@ -1,0 +1,37 @@
+﻿@model HospBack.DB.Schedule
+
+<h2>Настройки дня</h2>
+
+<form method="post" action="/schedule/update">
+    <input hidden name="Id" value=@Model.Id />
+    <input type="time" name="StartTime" value="@Model.StartTime.Value.ToString("HH:mm")" />
+    <input type="time" name="EndTime" value="@Model.EndTime.Value.ToString("HH:mm")" />
+    <input name="VisitTime" value="@Model.VisitTime" />
+    <button type="submit">Обновить день</button>
+</form>
+
+<form method="post" action="/schedule/delete">
+    <input hidden name="DoctorId" value=@Model.DoctorId />
+    <input hidden name="Id" value=@Model.Id />
+    <button type="submit">Удалить день</button>
+</form>
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">День обновлен</p>
+        break;
+    case "not exist":
+        <p style="color:darkred">Такой день не существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "visitexist":
+        <p style="color:darkred">Чтобы внести изменения, требуется удалить запланированные посещения на этот день</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
+

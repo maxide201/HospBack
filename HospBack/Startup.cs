@@ -51,9 +51,6 @@ namespace HospBack
             })
                 .AddEntityFrameworkStores<dbContext>();
 
-            // репозитории моделей
-            AddModelRepositories(services);
-
             // сервисы моделей
             AddModelServices(services);
 
@@ -66,14 +63,7 @@ namespace HospBack
             services.AddScoped<IDoctorTypeService, DoctorTypeService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IRegistrarService, RegistrarService>();
-        }
-        public void AddModelRepositories(IServiceCollection services)
-        {
-            services.AddScoped<IHospitalRepository, HospitalRepository>();
-            services.AddScoped<IDoctorRepository, DoctorRepository>();
-            services.AddScoped<IDoctorTypeRepository, DoctorTypeRepository>();
-            services.AddScoped<IPatientRepository, PatientRepository>();
-            services.AddScoped<IRegistrarRepository, RegistrarRepository>();
+            services.AddScoped<IScheduleService, ScheduleService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

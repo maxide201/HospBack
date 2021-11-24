@@ -1,0 +1,25 @@
+﻿<h2>Создание пациента</h2>
+<form method="post">
+    <input type="hidden" name="Id" />
+    Имя: <input name="Name" />
+    Фамилия: <input name="Surname" />
+    Телефон: <input name="PhoneNumber" />
+    Почта: <input name="Email" />
+    <button type="submit">Создать пациента</button>
+</form>
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Пациент создан</p>
+        break;
+    case "exist":
+        <p style="color:darkred">Пациент с таким номером телефона уже существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}

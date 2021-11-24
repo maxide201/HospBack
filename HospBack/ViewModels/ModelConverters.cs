@@ -16,6 +16,21 @@ namespace HospBack.ViewModels
 				return null;
 
 			var model = new Patient();
+			model.Id = patient.Id;
+			model.Name = patient.Name;
+			model.Surname = patient.Surname;
+			model.PhoneNumber = patient.PhoneNumber;
+			model.Email = patient.Email;
+
+			return model;
+		}
+		public static PatientViewModel ToViewModel(this Patient patient)
+		{
+			if (patient == null)
+				return null;
+
+			var model = new PatientViewModel();
+			model.Id = patient.Id;
 			model.Name = patient.Name;
 			model.Surname = patient.Surname;
 			model.PhoneNumber = patient.PhoneNumber;
@@ -127,7 +142,7 @@ namespace HospBack.ViewModels
 			return model;
 		}
 
-		public static DoctorViewModel ToViewModel(this Doctor doctor, string email)
+		public static DoctorViewModel ToViewModel(this Doctor doctor, string email = null)
 		{
 			if (doctor == null)
 				return null;
@@ -143,5 +158,21 @@ namespace HospBack.ViewModels
 			return model;
 		}
 		#endregion
+
+		public static Schedule ToDataModel(this ScheduleViewModel schedule)
+		{
+			if (schedule == null)
+				return null;
+
+			var model = new Schedule();
+			model.Id = schedule.Id;
+			model.DoctorId = schedule.DoctorId;
+			model.Day = schedule.Day;
+			model.StartTime = schedule.StartTime;
+			model.EndTime = schedule.EndTime;
+			model.VisitTime = schedule.VisitTime;
+
+			return model;
+		}
 	}
 }

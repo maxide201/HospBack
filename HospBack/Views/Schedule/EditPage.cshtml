@@ -1,0 +1,12 @@
+﻿@model IEnumerable<HospBack.DB.Doctor>
+
+<h2>Расписание</h2>
+<h3>Выбор врача</h3>
+@foreach(var doctor in Model)
+{
+    <a href="/schedule/edit/@doctor.Id">
+        <div>
+            @doctor.Surname &nbsp; @doctor.Name
+        </div>
+    </a>
+}

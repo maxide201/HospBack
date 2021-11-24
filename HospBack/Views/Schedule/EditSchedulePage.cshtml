@@ -1,0 +1,40 @@
+﻿@model HospBack.ViewModels.AddSchedulePageModelView
+
+<h2>Расписание</h2>
+<h3>Врач - @Model.Doctor.Surname &nbsp; @Model.Doctor.Name</h3>
+
+
+Расписание:
+<form method="post" action="/schedule/create">
+    <input hidden name="DoctorId" value=@Model.Doctor.Id />
+    <input type="date" name="Day" />
+    <input type="time" name="StartTime" />
+    <input type="time" name="EndTime" />
+    <input name="VisitTime" />
+    <button type="submit">Добавить день</button>
+</form>
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">День добавлен</p>
+        break;
+    case "exist":
+        <p style="color:darkred">Такой день уже существует</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}
+
+@foreach (var schedule in Model.Schedules)
+{
+    <hr />
+    <a href="/schedule/update/@schedule.Id">
+        <p>@schedule.Day.ToString("dd.MM")</p>
+        <p>@schedule.StartTime.Value.ToString("HH:mm") - @schedule.EndTime.Value.ToString("HH:mm")</p>
+    </a>
+}

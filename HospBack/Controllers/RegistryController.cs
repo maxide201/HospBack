@@ -8,7 +8,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using HospBack.ViewModels;
+using HospBack.Services;
 using HospBack.DB;
+using HospBack.Exceptions;
 
 namespace HospBack.Controllers
 {
@@ -16,38 +18,56 @@ namespace HospBack.Controllers
     [Authorize(Roles = "registrar")]
     public class RegistryController : ControllerBase
     {
-        public RegistryController(IConfiguration configuration) : base(configuration) { }
-
-   //     [HttpPost]
-   //     [Route("Create")]
-   //     public IActionResult CreatePatient([FromForm]PatientViewModel patient)
-   //     {
-   //         if (!isDataCorrect(patient))
-   //             return View("CreatePage");
-
-   //         using(var ctx = CreateDataContext())
-			//{
-   //             var model = patient.ToDataModel();
-
-   //             ctx.Patients.Add(model);
-   //             ctx.SaveChanges();
-
-   //             return Redirect("CreatePage");
-   //         }
-   //     }
+        IRegistrarService _registrarService;
+        IPatientService _patientService;
+        public RegistryController(IConfiguration configuration, IRegistrarService registrarService,
+                                  IPatientService patientService) : base(configuration)
+        {
+            _registrarService = registrarService;
+            _patientService = patientService;
+        }
 
         [HttpGet]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("patient/create")]
+        public IActionResult CreatePatient()
 		{
             return View();
 		}
 
-
-        private bool isDataCorrect(PatientViewModel patient)
+        [HttpPost]
+        [Route("patient/create")]
+        public IActionResult CreatePatient(PatientViewModel patient)
         {
-            if (patient?.PhoneNumber != null && patient?.Name != null && patient?.Surname != null)
-                return true;
-            return false;
+            using (var ctx = CreateDataContext())
+            {
+                try
+                {
+                    var model = patient.ToDataModel();
+                    _patientService.CreatePatient(ctx, model);
+                    TempData["status"] = "ok";
+                }
+                catch (IncorrectDataException)
+                {
+                    TempData["status"] = "incorrect";
+                }
+                catch (ModelAlreadyExistException)
+                {
+                    TempData["status"] = "exist";
+                }
+                catch (Exception)
+                {
+                    TempData["status"] = "unknow";
+                }
+                ctx.SaveChanges();
+
+                return Redirect("/registry/patient/create");
+            }
         }
     }
 }
