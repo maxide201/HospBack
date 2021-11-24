@@ -13,6 +13,7 @@ using HospBack.DB;
 namespace HospBack.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "admin,registrar")]
     public class PatientController : ControllerBase
     {
         public PatientController(IConfiguration configuration) : base(configuration) { }

@@ -15,6 +15,7 @@ using HospBack.Exceptions;
 namespace HospBack.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "admin,registrar")]
     public class VisitController : ControllerBase
     {
         IDoctorService _doctorService;
@@ -166,100 +167,6 @@ namespace HospBack.Controllers
             }
             
 		}
-
-    //    [HttpPost]
-    //    [Route("create")]
-    //    public IActionResult CreateSchedule(ScheduleViewModel schedule)
-    //    {
-    //        using (var ctx = CreateDataContext())
-    //        {
-    //            try
-    //            {
-    //                var model = schedule.ToDataModel();
-    //                _scheduleService.CreateSchedule(ctx, model);
-    //            }
-    //            catch(IncorrectDataException)
-    //            {
-    //                TempData["status"] = "incorrect";
-    //            }
-    //            catch (ModelAlreadyExistException)
-    //            {
-    //                TempData["status"] = "exist";
-    //            }
-    //            catch (Exception)
-    //            {
-    //                TempData["status"] = "unknow";
-    //            }
-    //            ctx.SaveChanges();
-    //            return Redirect("/schedule/edit/" + schedule.DoctorId);
-    //        }
-    //    }
-
-    //    [HttpGet]
-    //    [Route("update/{id}")]
-    //    public IActionResult UpdateSchedulePage([FromRoute] int id)
-    //    {
-    //        using (var ctx = CreateDataContext())
-    //        {
-    //            var schedule = _scheduleService.GetSchedule(ctx, id);
-    //            return View(schedule);
-    //        }
-    //    }
-
-    //    [HttpPost]
-    //    [Route("update")]
-    //    public IActionResult UpdateSchedule([FromForm] Schedule schedule)
-    //    {
-    //        using (var ctx = CreateDataContext())
-    //        {
-    //            try
-    //            {
-    //                _scheduleService.EditSchedule(ctx, schedule);
-    //            }
-    //            catch (IncorrectDataException)
-    //            {
-    //                TempData["status"] = "incorrect";
-    //            }
-    //            catch (ModelNotExistException)
-    //            {
-    //                TempData["status"] = "notexist";
-    //            }
-    //            catch(VisitExistException)
-				//{
-    //                TempData["status"] = "visitexist";
-    //            }
-    //            catch (Exception)
-    //            {
-    //                TempData["status"] = "unknow";
-    //            }
-    //            ctx.SaveChanges();
-    //            return Redirect("/schedule/update/" + schedule.Id);
-    //        }
-    //    }
-
-    //    [HttpPost]
-    //    [Route("delete")]
-    //    public IActionResult DeleteSchedule([FromForm]int id, [FromForm] int DoctorId)
-    //    {
-    //        using (var ctx = CreateDataContext())
-    //        {
-    //            try
-    //            {
-    //                _scheduleService.DeleteSchedule(ctx, id);
-    //            }
-    //            catch (VisitExistException)
-    //            {
-    //                TempData["status"] = "visitexist";
-    //            }
-    //            catch (Exception)
-    //            {
-    //                TempData["status"] = "unknow";
-    //            }
-    //            ctx.SaveChanges();
-
-    //            return Redirect("/schedule/edit/" + DoctorId);
-    //        }
-    //    }
 
 
     }

@@ -15,7 +15,7 @@ using HospBack.Exceptions;
 namespace HospBack.Controllers
 {
     [Route("[controller]")]
-    [Authorize(Roles = "registrar")]
+    [Authorize(Roles = "admin,registrar")]
     public class RegistryController : ControllerBase
     {
         IRegistrarService _registrarService;

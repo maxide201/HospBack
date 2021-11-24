@@ -15,6 +15,7 @@ using HospBack.Exceptions;
 namespace HospBack.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "admin,registrar")]
     public class ScheduleController : ControllerBase
     {
         IDoctorService _doctorService;
