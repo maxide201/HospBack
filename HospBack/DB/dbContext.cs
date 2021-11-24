@@ -410,7 +410,7 @@ namespace HospBack.DB
 
                 entity.Property(e => e.PatientId)
                     .IsRequired()
-                    .HasColumnName("user_id");
+                    .HasColumnName("patient_id");
 
                 entity.Property(e => e.VisitDate).HasColumnName("visit_date");
 

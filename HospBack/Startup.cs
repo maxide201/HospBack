@@ -56,7 +56,7 @@ namespace HospBack
 
         }
 
-        public void AddModelServices(IServiceCollection services )
+        public void AddModelServices(IServiceCollection services)
 		{
             services.AddScoped<IHospitalService, HospitalService>();
             services.AddScoped<IDoctorService, DoctorService>();
@@ -64,6 +64,7 @@ namespace HospBack
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IRegistrarService, RegistrarService>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<IVisitService, VisitService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

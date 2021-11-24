@@ -13,6 +13,7 @@ namespace HospBack.Services
 	{
 		List<Doctor> GetAllDoctors(dbContext ctx);
 		Doctor GetDoctor(dbContext ctx, int id);
+		List<Doctor> GetDoctorsByHospitalIdAndType(dbContext ctx, int hospitalId, int doctorType);
 		void CreateDoctor(dbContext ctx, Doctor doctor);
 		void EditDoctor(dbContext ctx, Doctor doctor);
 		void DeleteDoctor(dbContext ctx, int id);
@@ -58,6 +59,11 @@ namespace HospBack.Services
 		public Doctor GetDoctor(dbContext ctx, int id)
 		{
 			return ctx.Doctors.Find(id);
+		}
+
+		public List<Doctor> GetDoctorsByHospitalIdAndType(dbContext ctx, int hospitalId, int doctorType)
+		{
+			return ctx.Doctors.Where(x => x.HospitalId == hospitalId && x.DoctorType == doctorType).ToList();
 		}
 
 		public bool isDataCorrect(Doctor doctor)

@@ -13,10 +13,12 @@ namespace HospBack.Services
 	{
 		List<Hospital> GetAllHospitals(dbContext ctx);
 		Hospital GetHospital(dbContext ctx, int id);
+		List<Hospital> GetHospitalByDoctorType(dbContext ctx, int doctorType);
 		void CreateHospital(dbContext ctx, Hospital hospital);
 		void EditHospital(dbContext ctx, Hospital hospital);
 		void DeleteHospital(dbContext ctx, int id);
 	}
+
 	public class HospitalService : IHospitalService
 	{
 		public void CreateHospital(dbContext ctx, Hospital hospital)
@@ -60,6 +62,11 @@ namespace HospBack.Services
 		public Hospital GetHospital(dbContext ctx, int id)
 		{
 			return ctx.Hospitals.Find(id);
+		}
+
+		public List<Hospital> GetHospitalByDoctorType(dbContext ctx, int doctorType)
+		{
+			return ctx.Hospitals.Where(x => x.Doctors.Any(x => x.DoctorType == doctorType)).ToList();
 		}
 
 

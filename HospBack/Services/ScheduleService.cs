@@ -25,7 +25,7 @@ namespace HospBack.Services
 		{
 			isDataCorrect(schedule);
 
-			var model = ctx.Schedules.Where(x => x.Day == schedule.Day).FirstOrDefault();
+			var model = ctx.Schedules.Where(x => x.DoctorId == schedule.DoctorId && x.Day == schedule.Day).FirstOrDefault();
 			if (model != null)
 				throw new ModelAlreadyExistException();
 

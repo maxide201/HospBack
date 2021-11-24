@@ -159,6 +159,7 @@ namespace HospBack.ViewModels
 		}
 		#endregion
 
+		#region Schedule
 		public static Schedule ToDataModel(this ScheduleViewModel schedule)
 		{
 			if (schedule == null)
@@ -174,5 +175,23 @@ namespace HospBack.ViewModels
 
 			return model;
 		}
+		#endregion
+
+		#region Visit
+		public static Visit ToDataModel(this VisitViewModel visit)
+		{
+			if (visit == null)
+				return null;
+
+			var model = new Visit();
+			model.Id = visit.Id;
+			model.DoctorId = visit.DoctorId;
+			model.PatientId = visit.PatientId;
+			model.VisitDate = visit.VisitDate;
+			model.Status = visit.Status;
+
+			return model;
+		}
+		#endregion
 	}
 }

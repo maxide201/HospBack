@@ -1,0 +1,59 @@
+﻿@switch (ViewBag.Status)
+{
+    case "type":
+        <h2>Выбор специализации</h2>
+        @foreach (var element in ViewBag.Elements)
+        {
+            <a href="/visit/create?patientId=@Context.Request.Query["patientId"]&doctorType=@element.Id">
+                @element.Type
+            </a>
+            <br />
+        }
+        break;
+    case "hospital":
+        <h2>Выбор больницы</h2>
+        @foreach (var element in ViewBag.Elements)
+        {
+            <a href="/visit/create?patientId=@Context.Request.Query["patientId"]&doctorType=@Context.Request.Query["doctorType"]&hospitalId=@element.Id">
+                @element.Name &nbsp; @element.Address
+            </a>
+            <br />
+        }
+        break;
+    case "doctor":
+        <h2>Выбор врача</h2>
+        @foreach (var element in ViewBag.Elements)
+        {
+            <a href="/visit/create?patientId=@Context.Request.Query["patientId"]&doctorType=@Context.Request.Query["doctorType"]&hospitalId=@Context.Request.Query["hospitalId"]&doctorId=@element.Id">
+                @element.Name &nbsp; @element.Surname
+            </a>
+            <br />
+        }
+        break;
+    case "schedule":
+        <h2>Выбор дня приема</h2>
+        @foreach (var element in ViewBag.Elements)
+        {
+            <a href="/visit/create?patientId=@Context.Request.Query["patientId"]&doctorType=@Context.Request.Query["doctorType"]&hospitalId=@Context.Request.Query["hospitalId"]&doctorId=@Context.Request.Query["doctorId"]&scheduleId=@element.Id">
+                @element.Day.ToString("dd.MM")
+            </a>
+            <br />
+        }
+        break;
+    case "time":
+        <h2>Выбор времени</h2>
+        @foreach (var time in ViewBag.Times)
+        {
+
+            <p>@time.ToString("HH:mm")</p>
+            <form method="post" action="/visit/create">
+                <input hidden name="DoctorId" value="@Context.Request.Query["doctorId"]" />
+                <input hidden name="PatientId" value="@Context.Request.Query["patientId"]" />
+                <input hidden type="datetime" name="VisitDate" value="@time" />
+                <button type="submit">Выбрать время</button>
+            </form>
+            <br />
+        }
+        break;
+}
+

@@ -1,0 +1,11 @@
+﻿@model HospBack.ViewModels.PatientVisitsPage
+
+<h2>@Model.Patient.Surname &nbsp; @Model.Patient.Name</h2>
+
+<a href="/visit/create?patientId=@Model.Patient.Id">Создать запись</a>
+
+@foreach (var visit in Model.Visits)
+{
+    <br />
+    <a href="/visit/edit/@visit.Id">@visit.VisitDate.ToString("dd/MM - HH:mm")</a>
+}
