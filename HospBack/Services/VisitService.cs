@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 using HospBack.DB;
 using HospBack.Exceptions;
-using HospBack.Repositories;
 
 namespace HospBack.Services
 {
@@ -17,7 +16,7 @@ namespace HospBack.Services
 		void CreateVisit(dbContext ctx, Visit visit);
 		void DeleteVisit(dbContext ctx, int id);
 		List<Visit> GetVisitsByPatientId(dbContext ctx, int id);
-		List<Visit> GetVisitsByVisitDay(dbContext ctx, DateTime day);
+		List<Visit> GetVisitsByVisitDayAndDoctorId(dbContext ctx, DateTime day, int doctorId);
 		public Visit GetVisitByTimeAndDoctorId(dbContext ctx, DateTime time, int doctorId);
 	}
 	public class VisitService : IVisitService
@@ -55,9 +54,11 @@ namespace HospBack.Services
 		{
 			return ctx.Visits.Where(x => x.PatientId == id).ToList();
 		}
-		public List<Visit> GetVisitsByVisitDay(dbContext ctx, DateTime day)
+		public List<Visit> GetVisitsByVisitDayAndDoctorId(dbContext ctx, DateTime day, int doctorId)
 		{
-			return ctx.Visits.Where(x => x.VisitDate.Day == day.Day).ToList();
+			return ctx.Visits.Where(x => x.DoctorId == doctorId && x.VisitDate.Day == day.Day)
+				.Include(x => x.Patient)
+				.ToList();
 		}
 
 		public Visit GetVisitByTimeAndDoctorId(dbContext ctx, DateTime time, int doctorId)

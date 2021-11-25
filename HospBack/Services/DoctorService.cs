@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using HospBack.DB;
 using HospBack.Exceptions;
-using HospBack.Repositories;
 
 namespace HospBack.Services
 {
@@ -13,6 +13,7 @@ namespace HospBack.Services
 	{
 		List<Doctor> GetAllDoctors(dbContext ctx);
 		Doctor GetDoctor(dbContext ctx, int id);
+		Doctor GetDoctorByUserId(dbContext ctx, string id);
 		List<Doctor> GetDoctorsByHospitalIdAndType(dbContext ctx, int hospitalId, int doctorType);
 		void CreateDoctor(dbContext ctx, Doctor doctor);
 		void EditDoctor(dbContext ctx, Doctor doctor);
@@ -61,6 +62,10 @@ namespace HospBack.Services
 			return ctx.Doctors.Find(id);
 		}
 
+		public Doctor GetDoctorByUserId(dbContext ctx, string id)
+		{
+			return ctx.Doctors.Where(x => x.UserId == id).FirstOrDefault();
+		}
 		public List<Doctor> GetDoctorsByHospitalIdAndType(dbContext ctx, int hospitalId, int doctorType)
 		{
 			return ctx.Doctors.Where(x => x.HospitalId == hospitalId && x.DoctorType == doctorType).ToList();

@@ -1,0 +1,12 @@
+﻿@model List<HospBack.DB.Visit>
+
+@foreach (var visit in Model)
+{
+    <br />
+    <a href="/doctor/visit/@visit.Id">
+        <div>
+            @visit.VisitDate.ToString("dd/MM - HH:mm") <br />
+            @visit.Patient.Surname &nbsp; @visit.Patient.Name
+        </div>
+    </a>
+}

@@ -1,0 +1,21 @@
+﻿@model HospBack.DB.Certificate
+
+<form method="post" action="/doctor/certificate">
+    <input hidden name="VisitId" value="@Model.VisitId" />
+    <input hidden name="Id" value="@Model.Id" />
+    <textarea name="Description">@Model.Description</textarea>
+    <button type="submit">Сохранить</button>
+</form>
+
+@switch ((string)TempData["status"])
+{
+    case "ok":
+        <p style="color:forestgreen">Сохранено</p>
+        break;
+    case "incorrect":
+        <p style="color:darkred">Введенные данные некорректны</p>
+        break;
+    case "unknow":
+        <p style="color:darkred">Произошла неизвестная ошибка</p>
+        break;
+}

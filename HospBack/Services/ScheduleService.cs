@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using HospBack.DB;
 using HospBack.Exceptions;
-using HospBack.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospBack.Services

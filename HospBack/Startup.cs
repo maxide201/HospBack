@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 
 using HospBack.DB;
 using HospBack.Services;
-using HospBack.Repositories;
 
 namespace HospBack
 {
@@ -65,6 +64,7 @@ namespace HospBack
             services.AddScoped<IRegistrarService, RegistrarService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IVisitService, VisitService>();
+            services.AddScoped<ICertificateService, CertificateService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
