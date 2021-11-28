@@ -39,7 +39,7 @@ namespace HospBack.Services
 			var model = ctx.Visits.Find(id);
 			if (model == null)
 				throw new ModelNotExistException();
-			if (model.VisitDate < DateTime.Now)
+			if (model.Status != "created")
 				throw new Exception();
 
 			ctx.Visits.Remove(model);
@@ -52,7 +52,7 @@ namespace HospBack.Services
 
 		public List<Visit> GetVisitsByPatientId(dbContext ctx, int id)
 		{
-			return ctx.Visits.Where(x => x.PatientId == id).ToList();
+			return ctx.Visits.Where(x => x.PatientId == id).OrderByDescending(x => x.VisitDate).ToList();
 		}
 		public List<Visit> GetVisitsByVisitDayAndDoctorId(dbContext ctx, DateTime day, int doctorId)
 		{

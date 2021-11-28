@@ -5,7 +5,10 @@
 Врач: @Model.Doctor.Surname &nbsp; @Model.Doctor.Name <br />
 Специальность: @Model.Doctor.DoctorTypeNavigation.Type <br />
 
-<form method="post" action="/visit/delete">
-    <input hidden name="Id" value="@Model.Id" />
-    <button type="submit">Отменить запись</button>
-</form>
+@if (Model.Status == "created")
+{
+    <form method="post" action="/visit/delete">
+        <input hidden name="Id" value="@Model.Id"/>
+        <button type="submit">Отменить запись</button>
+    </form>
+}

@@ -23,7 +23,7 @@ namespace HospBack.Services
 		{
 			isDataCorrect(certificate);
 
-			var model = ctx.Certificates.Where(x => x.VisitId == certificate.VisitId).FirstOrDefault();
+			var model = ctx.Certificates.FirstOrDefault(x => x.VisitId == certificate.VisitId);
 			if (model != null)
 			{
 				model.Description = certificate.Description;
@@ -31,6 +31,7 @@ namespace HospBack.Services
 			else
 			{
 				ctx.Certificates.Add(certificate);
+				ctx.Visits.Find(certificate.VisitId).Status = "done";
 			}			
 		}
 
